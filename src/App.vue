@@ -6,7 +6,10 @@ import HelloWorld from './components/HelloWorld.vue'
   <v-app>
     <v-navigation-drawer></v-navigation-drawer>
 
-    <v-app-bar title="Title!"></v-app-bar>
+    <v-app-bar color="primary">
+      <v-app-bar-nav-icon></v-app-bar-nav-icon>
+      <v-app-bar-title>Title!</v-app-bar-title>
+    </v-app-bar>
 
     <v-container fluid>
       <v-main class="d-flex align-center justify-center">
