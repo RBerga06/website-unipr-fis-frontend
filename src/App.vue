@@ -78,7 +78,7 @@ themeSystemApply() // Make sure we match the system theme
     </v-app-bar>
 
     <v-navigation-drawer v-model="drawerVisible">
-      <v-list-item link title="Community" :icon="mdiAccountMultiple"></v-list-item>
+      <v-list-item link title="Community" :prepend-icon="mdiAccountMultiple"></v-list-item>
     </v-navigation-drawer>
 
     <v-container fluid>
