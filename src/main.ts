@@ -11,17 +11,17 @@ import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 
 const vuetify = createVuetify({
-    components,
-    directives,
-    // ssr: true,  // SSR (Server-Side Rendering)
-    icons: {
-        // Material Design Icons (MDI)
-        defaultSet: 'mdi',
-        aliases,
-        sets: {
-            mdi,
-        },
-    },
+  components,
+  directives,
+  // ssr: true,  // SSR (Server-Side Rendering)
+  icons: {
+    // Material Design Icons (MDI)
+    defaultSet: 'mdi',
+    aliases,
+    sets: {
+      mdi
+    }
+  }
 })
 
 createApp(App).use(vuetify).mount('#app')
