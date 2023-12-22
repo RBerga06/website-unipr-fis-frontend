@@ -1,7 +1,13 @@
 import './assets/main.css'
-
 import { createApp } from 'vue'
+import { createRouter, createWebHistory } from 'vue-router'
 import App from './App.vue'
+
+// Vue Router
+const router = createRouter({
+  history: createWebHistory(),
+  routes: []
+})
 
 // Vuetify
 import 'vuetify/styles'
@@ -24,4 +30,4 @@ const vuetify = createVuetify({
   }
 })
 
-createApp(App).use(vuetify).mount('#app')
+createApp(App).use(router).use(vuetify).mount('#app')
