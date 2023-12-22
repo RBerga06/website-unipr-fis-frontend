@@ -12,6 +12,7 @@ import * as directives from 'vuetify/directives'
 const vuetify = createVuetify({
     components,
     directives,
+    // ssr: true,  // SSR (Server-Side Rendering)
 })
 
 createApp(App).use(vuetify).mount('#app')

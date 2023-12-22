@@ -3,31 +3,17 @@ import HelloWorld from './components/HelloWorld.vue'
 </script>
 
 <template>
-  <header>
-    <div class="wrapper">
-      <HelloWorld msg="Hello, World!" />
-    </div>
-  </header>
+  <v-app>
+    <v-navigation-drawer></v-navigation-drawer>
 
-  <main></main>
+    <v-app-bar title="Title!"></v-app-bar>
+
+    <v-container fluid>
+      <v-main class="d-flex align-center justify-center">
+        <HelloWorld msg="Hello, World!" />
+      </v-main>
+    </v-container>
+  </v-app>
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-}
-</style>
+<style scoped></style>
