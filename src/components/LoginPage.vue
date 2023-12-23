@@ -11,7 +11,8 @@ const api = useApiStore()
 const user = useUserStore()
 const router = useRouter()
 
-const loginerr = ref<0 | 1 | 2>(0)
+const loginerr = ref('')
+const loginerrcounter = ref<0 | 1 | 2>(0)
 const tabId = ref(0)
 const tabs = ref([
   { id: 0, title: 'Login' },
@@ -25,11 +26,11 @@ const rules = {
     return true
   },
   loginerr: (_: any) => {
-    if (!loginerr.value) {
+    if (!loginerrcounter.value) {
       return true
     }
-    loginerr.value--
-    return 'Unknown username or bad password.'
+    loginerrcounter.value--
+    return loginerr.value
   }
 }
 const showPassword = ref(false)
@@ -54,7 +55,8 @@ async function login() {
       })
     )
     .catch((_: AxiosError) => {
-      loginerr.value = 2
+      loginerr.value = 'Unknown username or bad password'
+      loginerrcounter.value = 2
       userTextField.value?.validate()
       pwdTextField.value?.validate()
     })
@@ -66,15 +68,38 @@ async function login() {
   }
 }
 
+async function signup() {
+  // Create a new account
+  const response = await api.api
+    .post(
+      '/user/new',
+      new URLSearchParams({
+        username: username.value,
+        password: password.value
+      })
+    )
+    .catch((_: AxiosError) => {
+      loginerr.value = 'Unavailable username'
+      loginerrcounter.value = 1
+      userTextField.value?.validate()
+    })
+  if (response) {
+    // Log in the new user
+    await login()
+  }
+}
+
 async function submit() {
   if (!username.value || !password.value) return
   if (!!tabId.value && password.value != passwordConfirm.value) return
   loading.value = true
   if (tabId.value) {
     // Create the new user
+    await signup()
+  } else {
+    // Log in the user
+    await login()
   }
-  // Log in the user
-  await login()
   loading.value = false
 }
 </script>

@@ -72,7 +72,7 @@ themeSystemApply() // Make sure we match the system theme
   <v-app>
     <v-app-bar color="primary">
       <v-app-bar-nav-icon @click.stop="drawerToggle"></v-app-bar-nav-icon>
-      <v-app-bar-title>Our awesome website!</v-app-bar-title>
+      <v-app-bar-title>The Quantum Portal</v-app-bar-title>
       <v-btn :icon="themeIcon" @click="themeToggle"></v-btn>
       <v-menu>
         <template v-slot:activator="{ props }">
