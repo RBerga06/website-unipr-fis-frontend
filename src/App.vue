@@ -18,11 +18,8 @@ import { useApiStore } from '@/stores/api'
 const router = useRouter()
 
 /* --- BACKEND API CONNECTION --- */
-const api = useApiStore().api
-// Test the connection to the backend
-api.get('/').then((response) => {
-  console.log(response.data)
-})
+const api = useApiStore()
+api.api.get('/').then((result) => console.log(result.data))
 // TODO: Implement a JS/TS-only game to play if the backend is not available.
 // For example, Pong, Tetris, Snake, Mario, lichess.org's Chess Pursuit or something similar.
 // At the end of each round/game, the frontend should retry connecting to the backend.

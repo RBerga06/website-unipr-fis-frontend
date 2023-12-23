@@ -2,9 +2,14 @@
 import { ref } from 'vue'
 import { mdiEye, mdiEyeOff } from '@mdi/js'
 import type { VTextField } from 'vuetify/components'
+import type { AxiosError } from 'axios'
 import { useApiStore } from '@/stores/api'
+import { useUserStore, type Token } from '@/stores/user'
 
-const api = useApiStore().api
+const api = useApiStore()
+const user = useUserStore()
+
+const loginerr = ref<0 | 1 | 2>(0)
 const tabId = ref(0)
 const tabs = ref([
   { id: 0, title: 'Login' },
@@ -16,21 +21,57 @@ const rules = {
   pwdmatchvalidate: (_: any) => {
     pwdConfirmTextField.value?.validate()
     return true
+  },
+  loginerr: (_: any) => {
+    if (!loginerr.value) {
+      return true
+    }
+    loginerr.value--
+    return 'Unknown username or bad password.'
   }
 }
 const showPassword = ref(false)
 const showPasswordConfirm = ref(false)
+const userTextField = ref<VTextField | null>(null)
+const pwdTextField = ref<VTextField | null>(null)
 const pwdConfirmTextField = ref<VTextField | null>(null)
 const loading = ref(false)
 
 const username = ref<string>('')
 const password = ref<string>('')
+const passwordConfirm = ref<string>('')
+
+async function login() {
+  // OAuth2 Login
+  console.log('login', username.value, password.value)
+  const response = await api.api
+    .post(
+      '/token',
+      new URLSearchParams({
+        username: username.value,
+        password: password.value
+      })
+    )
+    .catch((_: AxiosError) => {
+      loginerr.value = 2
+      userTextField.value?.validate()
+      pwdTextField.value?.validate()
+    })
+  if (response) {
+    // Store the token
+    user.token = response.data as Token
+  }
+}
 
 async function submit() {
   if (!username.value || !password.value) return
+  if (!!tabId.value && password.value != passwordConfirm.value) return
   loading.value = true
-  console.log('Submit!')
-  console.log({ username: username.value, password: password.value })
+  if (tabId.value) {
+    // Create the new user
+  }
+  // Log in the user
+  await login()
   loading.value = false
 }
 </script>
@@ -43,12 +84,18 @@ async function submit() {
       </v-tabs>
       <v-container><v-spacer></v-spacer></v-container>
       <v-form @submit.prevent="submit">
-        <v-text-field label="Username" :rules="[rules.required]" v-model="username"></v-text-field>
         <v-text-field
+          ref="userTextField"
+          label="Username"
+          :rules="[rules.required, rules.loginerr]"
+          v-model="username"
+        ></v-text-field>
+        <v-text-field
+          ref="pwdTextField"
           label="Password"
           :append-inner-icon="showPassword ? mdiEye : mdiEyeOff"
           :type="showPassword ? 'text' : 'password'"
-          :rules="[rules.required, rules.pwdmatchvalidate]"
+          :rules="[rules.required, rules.pwdmatchvalidate, rules.loginerr]"
           v-model="password"
           @click:append-inner="showPassword = !showPassword"
         ></v-text-field>
@@ -61,12 +108,13 @@ async function submit() {
               :append-inner-icon="showPasswordConfirm ? mdiEye : mdiEyeOff"
               :type="showPasswordConfirm ? 'text' : 'password'"
               :rules="[rules.required, rules.pwdmatch]"
+              v-model="passwordConfirm"
               @click:append-inner="showPasswordConfirm = !showPasswordConfirm"
             ></v-text-field>
           </v-window-item>
         </v-window>
         <v-btn block variant="elevated" type="submit" color="primary" :loading="loading">{{
-          tabId === 0 ? 'Login' : 'Sign Up'
+          tabId ? 'Sign Up' : 'Login'
         }}</v-btn>
       </v-form>
     </v-col>
