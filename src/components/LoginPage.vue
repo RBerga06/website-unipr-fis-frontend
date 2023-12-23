@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { mdiEye, mdiEyeOff } from '@mdi/js'
 import type { VTextField } from 'vuetify/components'
+import { useApiStore } from '@/stores/api'
 
 const tabId = ref(0)
 const tabs = ref([
@@ -19,8 +20,18 @@ const rules = {
 const showPassword = ref(false)
 const showPasswordConfirm = ref(false)
 const pwdConfirmTextField = ref<VTextField | null>(null)
+const loading = ref(false)
 
+const username = ref<string>('')
 const password = ref<string>('')
+
+async function submit() {
+  if (!username.value || !password.value) return
+  loading.value = true
+  console.log('Submit!')
+  console.log({ username: username.value, password: password.value })
+  loading.value = false
+}
 </script>
 
 <template>
@@ -30,8 +41,8 @@ const password = ref<string>('')
         <v-tab v-for="tab of tabs" :key="tab.id">{{ tab.title }}</v-tab>
       </v-tabs>
       <v-container><v-spacer></v-spacer></v-container>
-      <v-form>
-        <v-text-field label="Username" :rules="[rules.required]"></v-text-field>
+      <v-form @submit.prevent="submit">
+        <v-text-field label="Username" :rules="[rules.required]" v-model="username"></v-text-field>
         <v-text-field
           label="Password"
           :append-inner-icon="showPassword ? mdiEye : mdiEyeOff"
@@ -53,7 +64,7 @@ const password = ref<string>('')
             ></v-text-field>
           </v-window-item>
         </v-window>
-        <v-btn block variant="elevated" type="submit" color="primary">{{
+        <v-btn block variant="elevated" type="submit" color="primary" :loading="loading">{{
           tabId === 0 ? 'Login' : 'Sign Up'
         }}</v-btn>
       </v-form>

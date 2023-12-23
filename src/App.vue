@@ -11,16 +11,14 @@ import {
 import { useTheme } from 'vuetify'
 import { computed } from 'vue'
 import { ref } from 'vue'
-import axios from 'axios'
 import { useRouter } from 'vue-router'
+import { useApiStore } from '@/stores/api'
 
 /* --- VUE ROUTER --- */
 const router = useRouter()
 
 /* --- BACKEND API CONNECTION --- */
-const api = axios.create({
-  baseURL: 'http://127.0.0.1:8000/'
-})
+const api = useApiStore().api
 // Test the connection to the backend
 api.get('/').then((response) => {
   console.log(response.data)

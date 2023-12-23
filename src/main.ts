@@ -1,16 +1,19 @@
-import './assets/main.css'
 import { createApp } from 'vue'
+import { createPinia } from 'pinia'
 import { createRouter, createWebHistory } from 'vue-router'
-import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
 import { aliases, mdi } from 'vuetify/iconsets/mdi-svg'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
+import 'vuetify/styles'
 import App from './App.vue'
 import HomePage from './components/HomePage.vue'
 import CommunityPage from './components/CommunityPage.vue'
 import LoginPage from './components/LoginPage.vue'
 import NotFoundPage from './components/NotFoundPage.vue'
+
+// Pinia
+const pinia = createPinia()
 
 // Vue Router
 const routes = [
@@ -40,4 +43,4 @@ const vuetify = createVuetify({
 })
 
 // Vue App
-createApp(App).use(router).use(vuetify).mount('#app')
+createApp(App).use(pinia).use(router).use(vuetify).mount('#app')
