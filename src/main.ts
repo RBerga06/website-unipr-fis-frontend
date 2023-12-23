@@ -9,12 +9,14 @@ import * as directives from 'vuetify/directives'
 import App from './App.vue'
 import HomePage from './components/HomePage.vue'
 import CommunityPage from './components/CommunityPage.vue'
+import LoginPage from './components/LoginPage.vue'
 import NotFoundPage from './components/NotFoundPage.vue'
 
 // Vue Router
 const routes = [
   { path: '/', component: HomePage },
   { path: '/users/', component: CommunityPage },
+  { path: '/login/', component: LoginPage },
   { path: '/:pathMatch(.*)*', component: NotFoundPage }
 ]
 const router = createRouter({
