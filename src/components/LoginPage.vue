@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { mdiEye, mdiEyeOff } from '@mdi/js'
 import type { VTextField } from 'vuetify/components'
 import type { AxiosError } from 'axios'
@@ -8,6 +9,7 @@ import { useUserStore, type Token } from '@/stores/user'
 
 const api = useApiStore()
 const user = useUserStore()
+const router = useRouter()
 
 const loginerr = ref<0 | 1 | 2>(0)
 const tabId = ref(0)
@@ -43,7 +45,6 @@ const passwordConfirm = ref<string>('')
 
 async function login() {
   // OAuth2 Login
-  console.log('login', username.value, password.value)
   const response = await api.api
     .post(
       '/token',
@@ -60,6 +61,8 @@ async function login() {
   if (response) {
     // Store the token
     user.token = response.data as Token
+    // Redirect to previous page
+    router.back()
   }
 }
 
