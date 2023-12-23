@@ -4,12 +4,17 @@ import {
   mdiWeatherNight,
   mdiWhiteBalanceSunny,
   mdiAccount,
-  mdiAccountMultiple
+  mdiAccountMultiple,
+  mdiHome
 } from '@mdi/js'
 import { useTheme } from 'vuetify'
 import { computed } from 'vue'
 import { ref } from 'vue'
 import axios from 'axios'
+import { useRouter } from 'vue-router'
+
+/* --- VUE ROUTER --- */
+const router = useRouter()
 
 /* --- BACKEND API CONNECTION --- */
 const api = axios.create({
@@ -77,7 +82,18 @@ themeSystemApply() // Make sure we match the system theme
     </v-app-bar>
 
     <v-navigation-drawer v-model="drawerVisible">
-      <v-list-item link title="Community" :prepend-icon="mdiAccountMultiple"></v-list-item>
+      <v-list-item
+        link
+        title="Home"
+        :prepend-icon="mdiHome"
+        @click="router.push('/')"
+      ></v-list-item>
+      <v-list-item
+        link
+        title="Community"
+        :prepend-icon="mdiAccountMultiple"
+        @click="router.push('/users/')"
+      ></v-list-item>
     </v-navigation-drawer>
 
     <v-container fluid>

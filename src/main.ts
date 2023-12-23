@@ -1,23 +1,26 @@
 import './assets/main.css'
 import { createApp } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
+import 'vuetify/styles'
+import { createVuetify } from 'vuetify'
+import { aliases, mdi } from 'vuetify/iconsets/mdi-svg'
+import * as components from 'vuetify/components'
+import * as directives from 'vuetify/directives'
 import App from './App.vue'
 import HomePage from './components/HomePage.vue'
+import CommunityPage from './components/CommunityPage.vue'
 
 // Vue Router
-const routes = [{ path: '/', component: HomePage }]
+const routes = [
+  { path: '/', component: HomePage },
+  { path: '/users/', component: CommunityPage }
+]
 const router = createRouter({
   history: createWebHistory(),
   routes
 })
 
 // Vuetify
-import 'vuetify/styles'
-import { createVuetify } from 'vuetify'
-import { aliases, mdi } from 'vuetify/iconsets/mdi-svg'
-import * as components from 'vuetify/components'
-import * as directives from 'vuetify/directives'
-
 const vuetify = createVuetify({
   components,
   directives,
@@ -32,4 +35,5 @@ const vuetify = createVuetify({
   }
 })
 
+// Vue App
 createApp(App).use(router).use(vuetify).mount('#app')
