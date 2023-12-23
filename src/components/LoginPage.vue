@@ -4,6 +4,7 @@ import { mdiEye, mdiEyeOff } from '@mdi/js'
 import type { VTextField } from 'vuetify/components'
 import { useApiStore } from '@/stores/api'
 
+const api = useApiStore().api
 const tabId = ref(0)
 const tabs = ref([
   { id: 0, title: 'Login' },
