@@ -9,11 +9,13 @@ import * as directives from 'vuetify/directives'
 import App from './App.vue'
 import HomePage from './components/HomePage.vue'
 import CommunityPage from './components/CommunityPage.vue'
+import NotFoundPage from './components/NotFoundPage.vue'
 
 // Vue Router
 const routes = [
   { path: '/', component: HomePage },
-  { path: '/users/', component: CommunityPage }
+  { path: '/users/', component: CommunityPage },
+  { path: '/:pathMatch(.*)*', component: NotFoundPage }
 ]
 const router = createRouter({
   history: createWebHistory(),

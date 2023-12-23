@@ -5,7 +5,8 @@ import {
   mdiWhiteBalanceSunny,
   mdiAccount,
   mdiAccountMultiple,
-  mdiHome
+  mdiHome,
+  mdiLogin
 } from '@mdi/js'
 import { useTheme } from 'vuetify'
 import { computed } from 'vue'
@@ -77,8 +78,15 @@ themeSystemApply() // Make sure we match the system theme
     <v-app-bar color="primary">
       <v-app-bar-nav-icon @click.stop="drawerToggle"></v-app-bar-nav-icon>
       <v-app-bar-title>Our awesome website!</v-app-bar-title>
-      <v-btn @click="themeToggle" :icon="themeIcon"></v-btn>
-      <v-btn :icon="mdiAccount"></v-btn>
+      <v-btn :icon="themeIcon" @click="themeToggle"></v-btn>
+      <v-menu>
+        <template v-slot:activator="{ props }">
+          <v-btn :icon="mdiAccount" v-bind="props"></v-btn>
+        </template>
+        <v-list>
+          <v-list-item>Anonymous</v-list-item>
+        </v-list>
+      </v-menu>
     </v-app-bar>
 
     <v-navigation-drawer v-model="drawerVisible">
@@ -93,6 +101,13 @@ themeSystemApply() // Make sure we match the system theme
         title="Community"
         :prepend-icon="mdiAccountMultiple"
         @click="router.push('/users/')"
+      ></v-list-item>
+      <v-divider></v-divider>
+      <v-list-item
+        link
+        title="Log In"
+        :prepend-icon="mdiLogin"
+        @click="router.push('/login/')"
       ></v-list-item>
     </v-navigation-drawer>
 
