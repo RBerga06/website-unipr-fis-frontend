@@ -10,7 +10,6 @@ import { useTheme } from 'vuetify'
 import { computed } from 'vue'
 import { ref } from 'vue'
 import axios from 'axios'
-import HelloWorld from './components/HelloWorld.vue'
 
 /* --- BACKEND API CONNECTION --- */
 const api = axios.create({
@@ -83,7 +82,7 @@ themeSystemApply() // Make sure we match the system theme
 
     <v-container fluid>
       <v-main class="d-flex align-center justify-center">
-        <HelloWorld msg="Hello, World!" />
+        <router-view></router-view>
       </v-main>
     </v-container>
   </v-app>
