@@ -4,11 +4,9 @@ import { useRouter } from 'vue-router'
 import { mdiEye, mdiEyeOff } from '@mdi/js'
 import type { VTextField } from 'vuetify/components'
 import type { AxiosError } from 'axios'
-import { useApiStore } from '@/stores/api'
-import { useUserStore, type Token } from '@/stores/user'
+import { useBackendStore, type Token } from '@/stores/backend'
 
-const api = useApiStore()
-const user = useUserStore()
+const backend = useBackendStore()
 const router = useRouter()
 
 const loginerr = ref('')
@@ -46,7 +44,7 @@ const passwordConfirm = ref<string>('')
 
 async function login() {
   // OAuth2 Login
-  const response = await api.api
+  const response = await backend.api
     .post(
       '/token',
       new URLSearchParams({
@@ -62,7 +60,7 @@ async function login() {
     })
   if (response) {
     // Store the token
-    user.token = response.data as Token
+    backend.login(response.data as Token)
     // Redirect to previous page
     router.back()
   }
@@ -70,7 +68,7 @@ async function login() {
 
 async function signup() {
   // Create a new account
-  const response = await api.api
+  const response = await backend.api
     .post(
       '/user/new',
       new URLSearchParams({

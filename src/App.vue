@@ -6,20 +6,21 @@ import {
   mdiAccount,
   mdiAccountMultiple,
   mdiHome,
-  mdiLogin
+  mdiLogin,
+  mdiLogout
 } from '@mdi/js'
 import { useTheme } from 'vuetify'
 import { computed } from 'vue'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { useApiStore } from '@/stores/api'
+import { useBackendStore } from '@/stores/backend'
 
 /* --- VUE ROUTER --- */
 const router = useRouter()
 
 /* --- BACKEND API CONNECTION --- */
-const api = useApiStore()
-api.api.get('/').then((result) => console.log(result.data))
+const backend = useBackendStore()
+backend.api.get('/').then((response) => console.log(response.data))
 // TODO: Implement a JS/TS-only game to play if the backend is not available.
 // For example, Pong, Tetris, Snake, Mario, lichess.org's Chess Pursuit or something similar.
 // At the end of each round/game, the frontend should retry connecting to the backend.
@@ -99,10 +100,26 @@ themeSystemApply() // Make sure we match the system theme
       ></v-list-item>
       <v-divider></v-divider>
       <v-list-item
+        v-if="backend.me === null"
         link
         title="Log In"
         :prepend-icon="mdiLogin"
         @click="router.push('/login/')"
+      ></v-list-item>
+      <v-list-item
+        v-else
+        link
+        title="Account"
+        :prepend-icon="mdiAccount"
+        @click="router.push('/account/')"
+      ></v-list-item>
+      <v-list-item
+        v-if="backend.me !== null"
+        link
+        title="Log Out"
+        variant="plain"
+        :prepend-icon="mdiLogout"
+        @click="router.push('/logout/')"
       ></v-list-item>
     </v-navigation-drawer>
 
