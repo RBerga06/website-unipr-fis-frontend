@@ -80,7 +80,8 @@ themeSystemApply() // Make sure we match the system theme
           <v-btn :icon="mdiAccount" v-bind="props"></v-btn>
         </template>
         <v-list>
-          <v-list-item>Anonymous</v-list-item>
+          <v-list-item v-if="backend.me === null" title="Anonymous"></v-list-item>
+          <v-list-item v-else :title="backend.me.username"></v-list-item>
         </v-list>
       </v-menu>
     </v-app-bar>
