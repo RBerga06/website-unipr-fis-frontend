@@ -46,7 +46,7 @@ async function login() {
   // OAuth2 Login
   const response = await backend.api
     .post(
-      '/token',
+      '/users/login/token',
       new URLSearchParams({
         username: username.value,
         password: password.value
@@ -70,7 +70,7 @@ async function signup() {
   // Create a new account
   const response = await backend.api
     .post(
-      '/user/new',
+      '/users/create/token',
       new URLSearchParams({
         username: username.value,
         password: password.value
@@ -82,8 +82,10 @@ async function signup() {
       userTextField.value?.validate()
     })
   if (response) {
-    // Log in the new user
-    await login()
+    // Store the token
+    backend.login(response.data as Token)
+    // Redirect to previous page
+    router.back()
   }
 }
 
@@ -92,7 +94,7 @@ async function submit() {
   if (!!tabId.value && password.value != passwordConfirm.value) return
   loading.value = true
   if (tabId.value) {
-    // Create the new user
+    // Create the new user (and log them in)
     await signup()
   } else {
     // Log in the user
