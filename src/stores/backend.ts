@@ -23,7 +23,6 @@ export const useBackendStore = defineStore('backend', {
   }),
   actions: {
     login(token: Token) {
-      console.log('token is', token)
       this.token = token
       this.api.defaults.headers.common.Authorization = `${token.token_type} ${token.access_token}`
       this.api.get('/users/me').then((response) => {
