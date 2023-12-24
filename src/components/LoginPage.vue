@@ -97,7 +97,7 @@ async function submit() {
     // Create the new user (and log them in)
     await signup()
   } else {
-    // Log in the user
+    // the user in
     await login()
   }
   loading.value = false

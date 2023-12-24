@@ -102,7 +102,7 @@ themeSystemApply() // Make sure we match the system theme
       <v-list-item
         v-if="backend.me === null"
         link
-        title="Log In"
+        title="Login"
         :prepend-icon="mdiLogin"
         @click="router.push('/login/')"
       ></v-list-item>
