@@ -7,12 +7,12 @@ import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import 'vuetify/styles'
 import App from './App.vue'
-import HomePage from './components/HomePage.vue'
-import CommunityPage from './components/CommunityPage.vue'
-import LoginPage from './components/LoginPage.vue'
-import LogoutPage from './components/LogoutPage.vue'
-import AccountVerifyPage from './components/AccountVerifyPage.vue'
-import NotFoundPage from './components/NotFoundPage.vue'
+import HomePage from './pages/HomePage.vue'
+import CommunityPage from './pages/CommunityPage.vue'
+import LoginPage from './pages/LoginPage.vue'
+import LogoutPage from './pages/LogoutPage.vue'
+import AccountVerifyPage from './pages/AccountVerifyPage.vue'
+import NotFoundPage from './pages/NotFoundPage.vue'
 
 // Pinia
 const pinia = createPinia()
