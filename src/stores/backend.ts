@@ -9,7 +9,8 @@ export interface Token {
 
 export interface User {
   username: string
-  is_admin: boolean
+  admin: boolean
+  banned: boolean
   verified: boolean
 }
 
@@ -22,10 +23,10 @@ export const useBackendStore = defineStore('backend', {
     me: null as User | null
   }),
   actions: {
-    login(token: Token) {
+    async login(token: Token) {
       this.token = token
       this.api.defaults.headers.common.Authorization = `${token.token_type} ${token.access_token}`
-      this.api.get('/users/me').then((response) => {
+      await this.api.get('/users/me').then((response) => {
         this.me = response.data as User
       })
     },

@@ -11,6 +11,7 @@ import HomePage from './components/HomePage.vue'
 import CommunityPage from './components/CommunityPage.vue'
 import LoginPage from './components/LoginPage.vue'
 import LogoutPage from './components/LogoutPage.vue'
+import AccountVerifyPage from './components/AccountVerifyPage.vue'
 import NotFoundPage from './components/NotFoundPage.vue'
 
 // Pinia
@@ -22,6 +23,7 @@ const routes = [
   { path: '/users/', component: CommunityPage },
   { path: '/login/', component: LoginPage },
   { path: '/logout/', component: LogoutPage },
+  { path: '/verify/', component: AccountVerifyPage },
   { path: '/:pathMatch(.*)*', component: NotFoundPage }
 ]
 const router = createRouter({

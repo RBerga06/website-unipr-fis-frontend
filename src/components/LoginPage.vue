@@ -42,6 +42,18 @@ const username = ref<string>('')
 const password = ref<string>('')
 const passwordConfirm = ref<string>('')
 
+async function finalize(token: Token) {
+  // Store the token
+  await backend.login(token)
+  if (backend.me?.verified) {
+    // If the account is verified, redirect to previous page
+    router.back()
+  } else {
+    // Else, redirect to the verification page
+    router.replace('/verify')
+  }
+}
+
 async function login() {
   // OAuth2 Login
   const response = await backend.api
@@ -59,10 +71,7 @@ async function login() {
       pwdTextField.value?.validate()
     })
   if (response) {
-    // Store the token
-    backend.login(response.data as Token)
-    // Redirect to previous page
-    router.back()
+    await finalize(response.data as Token)
   }
 }
 
@@ -82,10 +91,7 @@ async function signup() {
       userTextField.value?.validate()
     })
   if (response) {
-    // Store the token
-    backend.login(response.data as Token)
-    // Redirect to previous page
-    router.back()
+    await finalize(response.data as Token)
   }
 }
 
