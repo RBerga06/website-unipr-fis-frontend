@@ -31,14 +31,13 @@ async function verify() {
   // OAuth2-like request
   const response = await backend.api
     .post(
-      '/users/me/verify',
+      '/users/verify',
       new URLSearchParams({
-        username: 'passcode',
+        username: (backend.me as User).username,
         password: passcode.value
       })
     )
     .catch((_: AxiosError) => {
-      console.log('An error occurred!')
       error.value = 'Bad passcode.'
       textField.value?.validate()
     })
