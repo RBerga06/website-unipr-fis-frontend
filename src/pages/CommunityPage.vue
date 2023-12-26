@@ -56,6 +56,7 @@ onUnmounted(() => {
           :active="user.username == username"
         ></AccountListItem>
       </template>
+      <v-divider></v-divider>
       <v-list-subheader>Banned</v-list-subheader>
       <template v-for="user in users" :key="user.username">
         <AccountListItem
