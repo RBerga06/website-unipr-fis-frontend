@@ -35,7 +35,7 @@ onUnmounted(() => {
         <AccountListItem
           v-if="user.verified && !user.banned && user.admin"
           :user="user"
-          :active="user.username == username"
+          :active="user.username == props.username"
         ></AccountListItem>
       </template>
       <v-divider></v-divider>
@@ -44,7 +44,7 @@ onUnmounted(() => {
         <AccountListItem
           v-if="user.verified && !user.banned && !user.admin"
           :user="user"
-          :active="user.username == username"
+          :active="user.username == props.username"
         ></AccountListItem>
       </template>
       <v-divider></v-divider>
@@ -53,7 +53,7 @@ onUnmounted(() => {
         <AccountListItem
           v-if="!user.verified && !user.banned"
           :user="user"
-          :active="user.username == username"
+          :active="user.username == props.username"
         ></AccountListItem>
       </template>
       <v-divider></v-divider>
@@ -62,7 +62,7 @@ onUnmounted(() => {
         <AccountListItem
           v-if="user.banned"
           :user="user"
-          :active="user.username == username"
+          :active="user.username == props.username"
         ></AccountListItem>
       </template>
     </v-list>
