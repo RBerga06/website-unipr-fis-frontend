@@ -3,7 +3,7 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import { useBackendStore, type User } from '@/stores/backend'
 import AccountListItem from '@/components/AccountListItem.vue'
 
-const props = withDefaults(defineProps<{ username: string | null }>(), { username: null })
+withDefaults(defineProps<{ username: string | null }>(), { username: null })
 const users = ref<Array<User>>([])
 
 const backend = useBackendStore()
@@ -35,7 +35,7 @@ onUnmounted(() => {
         <AccountListItem
           v-if="user.verified && !user.banned && user.admin"
           :user="user"
-          :active="user.username == props.username"
+          :active="user.username == username"
         ></AccountListItem>
       </template>
       <v-divider></v-divider>
@@ -44,7 +44,7 @@ onUnmounted(() => {
         <AccountListItem
           v-if="user.verified && !user.banned && !user.admin"
           :user="user"
-          :active="user.username == props.username"
+          :active="user.username == username"
         ></AccountListItem>
       </template>
       <v-divider></v-divider>
@@ -53,7 +53,7 @@ onUnmounted(() => {
         <AccountListItem
           v-if="!user.verified && !user.banned"
           :user="user"
-          :active="user.username == props.username"
+          :active="user.username == username"
         ></AccountListItem>
       </template>
       <v-divider></v-divider>
@@ -62,7 +62,7 @@ onUnmounted(() => {
         <AccountListItem
           v-if="user.banned"
           :user="user"
-          :active="user.username == props.username"
+          :active="user.username == username"
         ></AccountListItem>
       </template>
     </v-list>
