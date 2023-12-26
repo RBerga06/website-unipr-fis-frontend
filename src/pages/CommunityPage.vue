@@ -1,24 +1,16 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { useBackendStore, type User } from '@/stores/backend'
-import AccountSummary from '@/components/AccountSummary.vue'
-import { computed } from 'vue'
-
-const backend = useBackendStore()
+import AccountListItem from '@/components/AccountListItem.vue'
 
 const users = ref<Array<User>>([])
-const users_admins = computed(() => {
-  return users.value.filter((u) => u.admin)
-})
-const users_nonadmins = computed(() => {
-  return users.value.filter((u) => !u.admin)
-})
 
+const backend = useBackendStore()
 const refresh = ref<number | null>(null)
 onMounted(() => {
   refresh.value = setInterval(() => {
     backend.api
-      .get(`/users/all`)
+      .get('/users/all')
       .catch((_) => {
         users.value = []
       })
@@ -35,16 +27,19 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <v-list>
-    <v-list-subheader>Admins</v-list-subheader>
-    <v-list-item v-for="user in users_admins"
-      ><AccountSummary :user="user"></AccountSummary
-    ></v-list-item>
-    <v-list-subheader>Users</v-list-subheader>
-    <v-list-item v-for="user in users_nonadmins"
-      ><AccountSummary :user="user"></AccountSummary
-    ></v-list-item>
-  </v-list>
+  <v-card class="mx-auto" width="400">
+    <v-list open-strategy="single">
+      <v-list-subheader>Admins</v-list-subheader>
+      <template v-for="user in users" :key="user.username">
+        <AccountListItem v-if="user.admin" :user="user"></AccountListItem>
+      </template>
+      <v-divider></v-divider>
+      <v-list-subheader>Users</v-list-subheader>
+      <template v-for="user in users" :key="user.username">
+        <AccountListItem v-if="!user.admin" :user="user"></AccountListItem>
+      </template>
+    </v-list>
+  </v-card>
 </template>
 
 <style scoped></style>
