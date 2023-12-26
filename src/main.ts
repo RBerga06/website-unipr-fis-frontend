@@ -21,6 +21,7 @@ const pinia = createPinia()
 const routes = [
   { path: '/', component: HomePage },
   { path: '/users/', component: CommunityPage },
+  { path: '/users/:username', component: CommunityPage, props: true },
   { path: '/login/', component: LoginPage },
   { path: '/logout/', component: LogoutPage },
   { path: '/verify/', component: AccountVerifyPage },

@@ -86,7 +86,7 @@ themeSystemApply() // Make sure we match the system theme
       </v-menu>
     </v-app-bar>
 
-    <v-navigation-drawer v-model="drawerVisible">
+    <v-navigation-drawer permanent :rail="drawerVisible">
       <v-list-item
         link
         title="Home"
