@@ -3,8 +3,6 @@ import {
   mdiThemeLightDark,
   mdiWeatherNight,
   mdiWhiteBalanceSunny,
-  mdiAccount,
-  mdiAccountTie,
   mdiAccountMultiple,
   mdiHome,
   mdiLogin,
@@ -14,7 +12,7 @@ import { useTheme } from 'vuetify'
 import { computed } from 'vue'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { useBackendStore } from '@/stores/backend'
+import { useBackendStore, userIcon } from '@/stores/backend'
 
 /* --- VUE ROUTER --- */
 const router = useRouter()
@@ -78,7 +76,7 @@ themeSystemApply() // Make sure we match the system theme
       <v-btn :icon="themeIcon" @click="themeToggle"></v-btn>
       <v-menu>
         <template v-slot:activator="{ props }">
-          <v-btn :icon="mdiAccount" v-bind="props"></v-btn>
+          <v-btn :icon="userIcon(backend.me)" v-bind="props"></v-btn>
         </template>
         <v-list>
           <v-list-item v-if="backend.me === null" title="Anonymous"></v-list-item>
@@ -115,7 +113,7 @@ themeSystemApply() // Make sure we match the system theme
         <v-list-item
           v-else
           link
-          :prepend-icon="backend.me.admin ? mdiAccountTie : mdiAccount"
+          :prepend-icon="userIcon(backend.me)"
           :active="router.currentRoute.value.path == '/account/'"
           @click="router.push('/account/')"
           >Account</v-list-item

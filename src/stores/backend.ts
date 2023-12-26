@@ -1,6 +1,7 @@
 /* Interface with the backend /*/
 import { defineStore } from 'pinia'
 import axios from 'axios'
+import { mdiAccount, mdiAccountTie } from '@mdi/js'
 
 export interface Token {
   access_token: string
@@ -12,6 +13,10 @@ export interface User {
   admin: boolean
   banned: boolean
   verified: boolean
+}
+
+export function userIcon(user: User | null) {
+  return user?.admin ? mdiAccountTie : mdiAccount
 }
 
 export const useBackendStore = defineStore('backend', {
