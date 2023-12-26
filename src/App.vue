@@ -4,6 +4,7 @@ import {
   mdiWeatherNight,
   mdiWhiteBalanceSunny,
   mdiAccount,
+  mdiAccountTie,
   mdiAccountMultiple,
   mdiHome,
   mdiLogin,
@@ -87,41 +88,48 @@ themeSystemApply() // Make sure we match the system theme
     </v-app-bar>
 
     <v-navigation-drawer permanent :rail="drawerVisible">
-      <v-list-item
-        link
-        title="Home"
-        :prepend-icon="mdiHome"
-        @click="router.push('/')"
-      ></v-list-item>
-      <v-list-item
-        link
-        title="Community"
-        :prepend-icon="mdiAccountMultiple"
-        @click="router.push('/users/')"
-      ></v-list-item>
-      <v-divider></v-divider>
-      <v-list-item
-        v-if="backend.me === null"
-        link
-        title="Login"
-        :prepend-icon="mdiLogin"
-        @click="router.push('/login/')"
-      ></v-list-item>
-      <v-list-item
-        v-else
-        link
-        title="Account"
-        :prepend-icon="mdiAccount"
-        @click="router.push('/account/')"
-      ></v-list-item>
-      <v-list-item
-        v-if="backend.me !== null"
-        link
-        title="Log Out"
-        variant="plain"
-        :prepend-icon="mdiLogout"
-        @click="router.push('/logout/')"
-      ></v-list-item>
+      <v-list nav density="compact">
+        <v-list-item
+          link
+          :prepend-icon="mdiHome"
+          :active="router.currentRoute.value.path == '/'"
+          @click="router.push('/')"
+          >Home</v-list-item
+        >
+        <v-list-item
+          link
+          :prepend-icon="mdiAccountMultiple"
+          :active="router.currentRoute.value.path.startsWith('/users/')"
+          @click="router.push('/users/')"
+          >Community</v-list-item
+        >
+        <v-divider></v-divider>
+        <v-list-item
+          v-if="backend.me === null"
+          link
+          :prepend-icon="mdiLogin"
+          :active="router.currentRoute.value.path == '/login/'"
+          @click="router.push('/login/')"
+          >Login</v-list-item
+        >
+        <v-list-item
+          v-else
+          link
+          :prepend-icon="backend.me.admin ? mdiAccountTie : mdiAccount"
+          :active="router.currentRoute.value.path == '/account/'"
+          @click="router.push('/account/')"
+          >Account</v-list-item
+        >
+        <v-list-item
+          v-if="backend.me !== null"
+          link
+          variant="plain"
+          :prepend-icon="mdiLogout"
+          :active="router.currentRoute.value.path == '/logout/'"
+          @click="router.push('/logout/')"
+          >Logout</v-list-item
+        >
+      </v-list>
     </v-navigation-drawer>
 
     <v-container fluid>
