@@ -5,6 +5,7 @@ import {
   mdiWhiteBalanceSunny,
   mdiAccountMultiple,
   mdiHome,
+  mdiFileDocumentMultiple,
   mdiLogin,
   mdiLogout
 } from '@mdi/js'
@@ -26,10 +27,7 @@ backend.api.get('/').then((response) => console.log(response.data))
 // If the backend becomes available, show the user a (non-enforcing) button to re-load the page.
 
 /* --- DRAWER --- */
-const drawerVisible = ref(false)
-function drawerToggle() {
-  drawerVisible.value = !drawerVisible.value
-}
+const drawerExpanded = ref(false)
 
 /* --- THEME MANAGEMENT UTILITIES --- */
 const theme = useTheme() // Vue's global theme
@@ -71,7 +69,7 @@ themeSystemApply() // Make sure we match the system theme
 <template>
   <v-app>
     <v-app-bar color="primary">
-      <v-app-bar-nav-icon @click.stop="drawerToggle"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon @click.stop="drawerExpanded = !drawerExpanded"></v-app-bar-nav-icon>
       <v-app-bar-title>The Quantum Portal</v-app-bar-title>
       <v-btn :icon="themeIcon" @click="themeToggle"></v-btn>
       <v-menu>
@@ -85,7 +83,7 @@ themeSystemApply() // Make sure we match the system theme
       </v-menu>
     </v-app-bar>
 
-    <v-navigation-drawer permanent :rail="drawerVisible">
+    <v-navigation-drawer permanent :rail="!drawerExpanded">
       <v-list nav density="compact">
         <v-list-item
           link
@@ -93,6 +91,13 @@ themeSystemApply() // Make sure we match the system theme
           :active="router.currentRoute.value.path == '/'"
           @click="router.push('/')"
           >Home</v-list-item
+        >
+        <v-list-item
+          link
+          :prepend-icon="mdiFileDocumentMultiple"
+          :active="router.currentRoute.value.path.startsWith('/info/')"
+          @click="router.push('/info/about-us')"
+          >Readings</v-list-item
         >
         <v-list-item
           link

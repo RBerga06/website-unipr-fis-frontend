@@ -8,6 +8,7 @@ import * as directives from 'vuetify/directives'
 import 'vuetify/styles'
 import App from './App.vue'
 import HomePage from './pages/HomePage.vue'
+import InfoPage from './pages/InfoPage.vue'
 import CommunityPage from './pages/CommunityPage.vue'
 import LoginPage from './pages/LoginPage.vue'
 import LogoutPage from './pages/LogoutPage.vue'
@@ -20,6 +21,7 @@ const pinia = createPinia()
 // Vue Router
 const routes = [
   { path: '/', component: HomePage },
+  { path: '/info/:page', component: InfoPage, props: true },
   { path: '/users/', component: CommunityPage },
   { path: '/users/:username', component: CommunityPage, props: true },
   { path: '/login/', component: LoginPage },
