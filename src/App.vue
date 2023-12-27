@@ -37,8 +37,10 @@ function onResize() {
 }
 onMounted(() => {
   window.addEventListener('resize', onResize)
+  backend.online()
 })
 onUnmounted(() => {
+  backend.offline()
   window.removeEventListener('resize', onResize)
 })
 

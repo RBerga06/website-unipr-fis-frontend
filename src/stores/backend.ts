@@ -15,10 +15,11 @@ export interface Token {
 }
 
 export interface User {
-  username: string
-  admin: boolean
-  banned: boolean
-  verified: boolean
+  readonly username: string
+  readonly admin: boolean
+  readonly banned: boolean
+  readonly verified: boolean
+  readonly online: boolean
 }
 
 export function userIcon(user: User | null) {
@@ -48,11 +49,21 @@ export const useBackendStore = defineStore('backend', {
       await this.api.get('/users/me').then((response) => {
         this.me = response.data as User
       })
+      await this.online()
     },
     logout() {
       this.token = null
       this.me = null
       this.api.defaults.headers.common.Authorization = null
+    },
+    async online(online: boolean = true) {
+      if (this.me === null) return
+      await this.api.get(`/users/me/edit?online=${online}`).then((response) => {
+        this.me = response.data as User
+      })
+    },
+    async offline(offline: boolean = true) {
+      this.online(!offline)
     }
   }
 })
