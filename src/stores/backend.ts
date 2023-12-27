@@ -1,7 +1,13 @@
 /* Interface with the backend /*/
 import { defineStore } from 'pinia'
 import axios from 'axios'
-import { mdiAccount, mdiAccountTie, mdiAccountCancel, mdiAccountQuestion } from '@mdi/js'
+import {
+  mdiAccount,
+  mdiAccountTie,
+  mdiAccountCancel,
+  mdiAccountQuestion,
+  mdiIncognito
+} from '@mdi/js'
 
 export interface Token {
   access_token: string
@@ -16,13 +22,15 @@ export interface User {
 }
 
 export function userIcon(user: User | null) {
-  return user?.admin
-    ? mdiAccountTie
-    : user?.banned
-      ? mdiAccountCancel
-      : user?.verified
-        ? mdiAccount
-        : mdiAccountQuestion
+  return user === null
+    ? mdiIncognito
+    : user.admin
+      ? mdiAccountTie
+      : user.banned
+        ? mdiAccountCancel
+        : user.verified
+          ? mdiAccount
+          : mdiAccountQuestion
 }
 
 export const useBackendStore = defineStore('backend', {
