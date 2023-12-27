@@ -14,6 +14,8 @@ import { computed } from 'vue'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useBackendStore, userIcon } from '@/stores/backend'
+import { onMounted } from 'vue'
+import { onUnmounted } from 'vue'
 
 /* --- VUE ROUTER --- */
 const router = useRouter()
@@ -26,8 +28,30 @@ backend.api.get('/').then((response) => console.log(response.data))
 // At the end of each round/game, the frontend should retry connecting to the backend.
 // If the backend becomes available, show the user a (non-enforcing) button to re-load the page.
 
+/* --- SCREEN DIMENSIONS --- */
+const screenSmall = computed(() => screenDimensions.value.width <= 480)
+const screenDimensions = ref({ width: window.innerWidth, height: window.innerHeight })
+function onResize() {
+  screenDimensions.value.width = window.innerWidth
+  screenDimensions.value.height = window.innerHeight
+}
+onMounted(() => {
+  window.addEventListener('resize', onResize)
+})
+onUnmounted(() => {
+  window.removeEventListener('resize', onResize)
+})
+
 /* --- DRAWER --- */
 const drawerExpanded = ref(false)
+const drawerVisible = computed({
+  get() {
+    return !screenSmall.value || drawerExpanded.value
+  },
+  set(drawerVisible: boolean) {
+    drawerExpanded.value = drawerVisible
+  }
+})
 
 /* --- THEME MANAGEMENT UTILITIES --- */
 const theme = useTheme() // Vue's global theme
@@ -83,7 +107,13 @@ themeSystemApply() // Make sure we match the system theme
       </v-menu>
     </v-app-bar>
 
-    <v-navigation-drawer permanent :rail="!drawerExpanded">
+    <v-navigation-drawer
+      v-model="drawerVisible"
+      :temporary="screenSmall"
+      :permanent="!screenSmall"
+      :rail="!screenSmall && !drawerExpanded"
+      :expand-on-hover="!screenSmall && !drawerExpanded"
+    >
       <v-list nav density="compact">
         <v-list-item
           link
