@@ -5,6 +5,7 @@ import { createVuetify } from 'vuetify'
 import { aliases, mdi } from 'vuetify/iconsets/mdi-svg'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
+import piniaPluginPersistedState from 'pinia-plugin-persistedstate'
 import 'vuetify/styles'
 import App from './App.vue'
 import HomePage from './pages/HomePage.vue'
@@ -16,7 +17,7 @@ import AccountVerifyPage from './pages/AccountVerifyPage.vue'
 import NotFoundPage from './pages/NotFoundPage.vue'
 
 // Pinia
-const pinia = createPinia()
+const pinia = createPinia().use(piniaPluginPersistedState)
 
 // Vue Router
 const routes = [

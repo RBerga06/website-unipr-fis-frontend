@@ -26,10 +26,11 @@ const icon = computed(() => {
 })
 </script>
 <template>
-  <v-avatar>
-    <v-badge dot bordered color="green" location="bottom end">
+  <v-avatar variant="text">
+    <v-badge v-if="user?.online" dot bordered color="success" location="bottom end">
       <v-icon :icon="icon"></v-icon>
     </v-badge>
+    <v-icon v-else :icon="icon"></v-icon>
   </v-avatar>
 </template>
 <style scoped></style>

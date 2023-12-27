@@ -1,13 +1,6 @@
 /* Interface with the backend /*/
 import { defineStore } from 'pinia'
 import axios from 'axios'
-import {
-  mdiAccount,
-  mdiAccountTie,
-  mdiAccountCancel,
-  mdiAccountQuestion,
-  mdiIncognito
-} from '@mdi/js'
 
 export interface Token {
   access_token: string
@@ -53,5 +46,6 @@ export const useBackendStore = defineStore('backend', {
     async offline(offline: boolean = true) {
       this.online(!offline)
     }
-  }
+  },
+  persist: true
 })
