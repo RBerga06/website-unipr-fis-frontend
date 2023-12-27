@@ -118,14 +118,6 @@ themeSystemApply() // Make sure we match the system theme
         <v-list-item
           v-else
           link
-          :prepend-icon="userIcon(backend.me)"
-          :active="router.currentRoute.value.path == '/account/'"
-          @click="router.push('/account/')"
-          >Account</v-list-item
-        >
-        <v-list-item
-          v-if="backend.me !== null"
-          link
           variant="plain"
           :prepend-icon="mdiLogout"
           :active="router.currentRoute.value.path == '/logout/'"

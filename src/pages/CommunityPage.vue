@@ -3,9 +3,11 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import { useBackendStore, type User } from '@/stores/backend'
 import AccountListItem from '@/components/AccountListItem.vue'
 import { mdiAccountCancel, mdiAccountQuestion } from '@mdi/js'
+import { computed } from 'vue'
 
-withDefaults(defineProps<{ username: string | null }>(), { username: null })
+const props = withDefaults(defineProps<{ username: string | null }>(), { username: null })
 const users = ref<Array<User>>([])
+const username_ = computed(() => (props.username === null ? backend.me?.username : props.username))
 
 function notMe(u: User) {
   return backend.me === null || u.username != backend.me.username
@@ -39,7 +41,7 @@ onUnmounted(() => {
         <v-list-subheader>Me</v-list-subheader>
         <AccountListItem
           :user="backend.me"
-          :active="backend.me.username == username"
+          :active="backend.me.username == username_"
         ></AccountListItem>
         <v-divider></v-divider>
       </template>
@@ -48,7 +50,7 @@ onUnmounted(() => {
         <AccountListItem
           v-if="notMe(user) && user.verified && !user.banned && user.admin"
           :user="user"
-          :active="user.username == username"
+          :active="user.username == username_"
         ></AccountListItem>
       </template>
       <v-divider></v-divider>
@@ -57,7 +59,7 @@ onUnmounted(() => {
         <AccountListItem
           v-if="notMe(user) && user.verified && !user.banned && !user.admin"
           :user="user"
-          :active="user.username == username"
+          :active="user.username == username_"
         ></AccountListItem>
       </template>
       <template v-if="backend.me !== null">
@@ -75,7 +77,7 @@ onUnmounted(() => {
             <AccountListItem
               v-if="notMe(user) && !user.verified && !user.banned"
               :user="user"
-              :active="user.username == username"
+              :active="user.username == username_"
             ></AccountListItem>
           </template>
         </v-list-group>
@@ -91,7 +93,7 @@ onUnmounted(() => {
             <AccountListItem
               v-if="notMe(user) && user.banned"
               :user="user"
-              :active="user.username == username"
+              :active="user.username == username_"
             ></AccountListItem>
           </template>
         </v-list-group>
