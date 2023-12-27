@@ -22,18 +22,6 @@ export interface User {
   readonly online: boolean
 }
 
-export function userIcon(user: User | null) {
-  return user === null
-    ? mdiIncognito
-    : user.admin
-      ? mdiAccountTie
-      : user.banned
-        ? mdiAccountCancel
-        : user.verified
-          ? mdiAccount
-          : mdiAccountQuestion
-}
-
 export const useBackendStore = defineStore('backend', {
   state: () => ({
     api: axios.create({

@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { userIcon, type User } from '@/stores/backend'
+import { type User } from '@/stores/backend'
 import { useRouter } from 'vue-router'
+import AccountAvatar from './AccountAvatar.vue'
 
 const props = defineProps<{
   user: User | null
@@ -14,7 +15,8 @@ function clicked() {
 </script>
 
 <template>
-  <v-list-item :link="user !== null" :prepend-icon="userIcon(user)" @click.stop="clicked">
+  <v-list-item :link="user !== null" @click.stop="clicked">
+    <AccountAvatar :user="user"></AccountAvatar>
     {{ user === null ? '[anonymous]' : user.username }}
   </v-list-item>
 </template>

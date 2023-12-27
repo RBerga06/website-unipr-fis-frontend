@@ -13,9 +13,10 @@ import { useTheme } from 'vuetify'
 import { computed } from 'vue'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { useBackendStore, userIcon } from '@/stores/backend'
+import { useBackendStore } from '@/stores/backend'
 import { onMounted } from 'vue'
 import { onUnmounted } from 'vue'
+import AccountAvatar from './components/AccountAvatar.vue'
 
 /* --- VUE ROUTER --- */
 const router = useRouter()
@@ -100,7 +101,7 @@ themeSystemApply() // Make sure we match the system theme
       <v-btn :icon="themeIcon" @click="themeToggle"></v-btn>
       <v-menu>
         <template v-slot:activator="{ props }">
-          <v-btn :icon="userIcon(backend.me)" v-bind="props"></v-btn>
+          <v-btn icon v-bind="props"><AccountAvatar :user="backend.me"></AccountAvatar></v-btn>
         </template>
         <v-list>
           <v-list-item v-if="backend.me === null" title="Anonymous"></v-list-item>
