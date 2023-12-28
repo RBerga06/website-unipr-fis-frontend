@@ -7,9 +7,9 @@ const backend = useBackendStore()
 const router = useRouter()
 const loading = ref(false)
 
-function logout() {
+async function logout() {
   loading.value = true
-  backend.logout()
+  await backend.logout()
   loading.value = false
   router.back()
 }

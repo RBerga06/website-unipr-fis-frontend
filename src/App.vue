@@ -9,13 +9,10 @@ import {
   mdiLogin,
   mdiLogout
 } from '@mdi/js'
-import { useTheme } from 'vuetify'
-import { computed } from 'vue'
-import { ref } from 'vue'
+import { ref, computed, onMounted, onUnmounted, onActivated, onDeactivated } from 'vue'
 import { useRouter } from 'vue-router'
+import { useTheme } from 'vuetify'
 import { useBackendStore } from '@/stores/backend'
-import { onMounted } from 'vue'
-import { onUnmounted } from 'vue'
 import AccountAvatar from './components/AccountAvatar.vue'
 
 /* --- VUE ROUTER --- */
@@ -38,11 +35,21 @@ function onResize() {
 }
 onMounted(() => {
   window.addEventListener('resize', onResize)
-  backend.online()
 })
 onUnmounted(() => {
-  backend.offline()
   window.removeEventListener('resize', onResize)
+})
+onActivated(() => {
+  // called on initial mount
+  // and every time it is re-inserted from the cache
+  console.log('activated!')
+  backend.online()
+})
+onDeactivated(() => {
+  // called when removed from the DOM into the cache
+  // and also when unmounted
+  backend.offline()
+  console.log('deactivated!')
 })
 
 /* --- DRAWER --- */

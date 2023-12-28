@@ -32,7 +32,8 @@ export const useBackendStore = defineStore('backend', {
       })
       await this.online()
     },
-    logout() {
+    async logout() {
+      await this.offline()
       this.token = null
       this.me = null
       this.api.defaults.headers.common.Authorization = null
@@ -44,7 +45,7 @@ export const useBackendStore = defineStore('backend', {
       })
     },
     async offline(offline: boolean = true) {
-      this.online(!offline)
+      await this.online(!offline)
     }
   },
   persist: true
