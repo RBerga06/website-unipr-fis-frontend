@@ -37,7 +37,7 @@ export const useBackendStore = defineStore('backend', {
     /* User 'watching' */
     async refresh() {
       // Update the state of all users (`me` included)
-      await this.api.get(`/users/all`).then((response) => {
+      await this.api.get('/users/').then((response) => {
         this.users = response.data as { [id: string]: User }
         if (this.me !== null) {
           this.me = this.users[this.me.username]
