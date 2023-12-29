@@ -15,12 +15,14 @@ import { useTheme } from 'vuetify'
 import { useBackendStore } from '@/stores/backend'
 import AccountAvatar from './components/AccountAvatar.vue'
 import AccountListItem from './components/AccountListItem.vue'
+import { storeToRefs } from 'pinia'
 
 /* --- VUE ROUTER --- */
 const router = useRouter()
 
 /* --- BACKEND API CONNECTION --- */
 const backend = useBackendStore()
+const { me } = storeToRefs(backend)
 backend.api.get('/').then((response) => console.log(response.data))
 // TODO: Implement a JS/TS-only game to play if the backend is not available.
 // For example, Pong, Tetris, Snake, Mario, lichess.org's Chess Pursuit or something similar.
@@ -37,8 +39,10 @@ function onResize() {
 onMounted(async () => {
   backend.authsync()
   window.addEventListener('resize', onResize)
+  backend.start()
 })
 onUnmounted(async () => {
+  backend.stop() // TODO: find a better place for this
   window.removeEventListener('resize', onResize)
 })
 
@@ -98,10 +102,10 @@ themeSystemApply() // Make sure we match the system theme
       <v-btn :icon="themeIcon" @click="themeToggle"></v-btn>
       <v-menu>
         <template v-slot:activator="{ props }">
-          <v-btn icon v-bind="props"><AccountAvatar me watch></AccountAvatar></v-btn>
+          <v-btn icon v-bind="props"><AccountAvatar :user="me"></AccountAvatar></v-btn>
         </template>
         <v-list>
-          <AccountListItem me></AccountListItem>
+          <AccountListItem :user="me"></AccountListItem>
         </v-list>
       </v-menu>
     </v-app-bar>

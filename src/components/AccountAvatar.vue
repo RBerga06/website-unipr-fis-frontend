@@ -9,65 +9,30 @@ import {
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { type User, isonline, useBackendStore } from '@/stores/backend'
 
-const props = withDefaults(
-  defineProps<{
-    username: string | null
-    me: boolean
-    watch: boolean
-  }>(),
-  { username: null, me: false, watch: false }
-)
-const user = defineModel<User | null>('user', { default: null })
+const props = defineProps<{
+  user: User | null
+}>()
 
 const online = ref(false)
-
-const backend = useBackendStore()
-
 const refreshId = ref<number | null>(null)
 
-async function refresh() {
-  if (props.watch) {
-    const _username = props.username === null ? user.value?.username : props.username
-    if (props.me) {
-      if (backend.me !== null) {
-        // Update the user v-model
-        await backend.api
-          .get(`/users/me`)
-          .catch((_) => {
-            user.value = null
-          })
-          .then((response) => {
-            if (response) {
-              user.value = response.data as User
-            }
-          })
-      }
-    } else if (_username !== null) {
-      // Update the user v-model
-      await backend.api.get(`/users/@${_username}`).then((response) => {
-        user.value = response.data as User
-      })
-    }
-  }
-  // Update the `online` ref
-  online.value = isonline(user.value)
-}
-
 onMounted(() => {
-  refreshId.value = setInterval(refresh, 1000) // Update every second
+  refreshId.value = setInterval(() => {
+    online.value = isonline(props.user)
+  }, 1000) // Update every second
 })
 onUnmounted(() => {
   if (refreshId.value !== null) clearInterval(refreshId.value)
 })
 
 const icon = computed(() => {
-  return user.value === null
+  return props.user === null
     ? mdiIncognito
-    : user.value.admin
+    : props.user.admin
       ? mdiAccountTie
-      : user.value.banned
+      : props.user.banned
         ? mdiAccountCancel
-        : user.value.verified
+        : props.user.verified
           ? mdiAccount
           : mdiAccountQuestion
 })

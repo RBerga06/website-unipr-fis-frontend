@@ -1,37 +1,43 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
 import { useBackendStore, type User } from '@/stores/backend'
 import AccountListItem from '@/components/AccountListItem.vue'
 import { mdiAccountCancel, mdiAccountQuestion } from '@mdi/js'
 import { computed } from 'vue'
+import { storeToRefs } from 'pinia'
 
 const props = withDefaults(defineProps<{ username: string | null }>(), { username: null })
-const users = ref<Array<User>>([])
+// const users = ref<Array<User>>([])
+const backend = useBackendStore()
+const { users: allUsers } = storeToRefs(backend)
+const users = computed(() => {
+  return Object.entries(allUsers)
+    .map((x) => x[1])
+    .filter((user) => user !== null)
+})
 const username_ = computed(() => (props.username === null ? backend.me?.username : props.username))
 
 function notMe(u: User) {
   return backend.me === null || u.username != backend.me.username
 }
 
-const backend = useBackendStore()
-const refresh = ref<number | null>(null)
-onMounted(() => {
-  refresh.value = setInterval(() => {
-    backend.api
-      .get('/users/all')
-      .catch((_) => {
-        users.value = []
-      })
-      .then((response) => {
-        if (response) {
-          users.value = response.data as User[]
-        }
-      })
-  }, 1000) // Update every second
-})
-onUnmounted(() => {
-  if (refresh.value !== null) clearInterval(refresh.value)
-})
+// const refresh = ref<number | null>(null)
+// onMounted(() => {
+//   refresh.value = setInterval(() => {
+//     backend.api
+//       .get('/users/all')
+//       .catch((_) => {
+//         users.value = []
+//       })
+//       .then((response) => {
+//         if (response) {
+//           users.value = response.data as User[]
+//         }
+//       })
+//   }, 1000) // Update every second
+// })
+// onUnmounted(() => {
+//   if (refresh.value !== null) clearInterval(refresh.value)
+// })
 </script>
 
 <template>

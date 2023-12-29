@@ -29,9 +29,29 @@ export const useBackendStore = defineStore('backend', {
       baseURL: 'http://127.0.0.1:8000/'
     }),
     token: null as Token | null,
-    me: null as User | null
+    me: null as User | null,
+    users: {} as { [id: string]: User },
+    _refreshId: null as number | null
   }),
   actions: {
+    /* User 'watching' */
+    async refresh() {
+      // Update the state of all users (`me` included)
+      await this.api.get(`/users/all`).then((response) => {
+        this.users = response.data as { [id: string]: User }
+        if (this.me !== null) {
+          this.me = this.users[this.me.username]
+        }
+      })
+    },
+    start() {
+      if (this._refreshId !== null) return
+      this._refreshId = setInterval(this.refresh, 1000)
+    },
+    stop() {
+      if (this._refreshId !== null) clearInterval(this._refreshId)
+    },
+
     /* User last_seen=... state */
     async interact() {
       /// Essentially, me.last_seen = now()
