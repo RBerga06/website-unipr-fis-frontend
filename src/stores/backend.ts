@@ -12,7 +12,15 @@ export interface User {
   readonly admin: boolean
   readonly banned: boolean
   readonly verified: boolean
-  readonly online: boolean
+  readonly last_seen: string | null
+}
+
+export function isonline(user: User | null) {
+  return (
+    user !== null &&
+    user.last_seen !== null &&
+    (Date.now() - new Date(user.last_seen).getDate()) / 1000 <= 120
+  )
 }
 
 export const useBackendStore = defineStore('backend', {
@@ -24,28 +32,34 @@ export const useBackendStore = defineStore('backend', {
     me: null as User | null
   }),
   actions: {
+    /* User last_seen=... state */
+    async interact() {
+      /// Essentially, me.last_seen = now()
+      if (this.me === null) return
+      await this.api.get(`users/me/edit?last_seen=${Date.now()}`).then((response) => {
+        this.me = response.data as User
+      })
+    },
+
+    /* OAuth stuff (login, logout) */
+    authsync() {
+      if (this.token === null) {
+        this.api.defaults.headers.common.Authorization = null
+      } else {
+        this.api.defaults.headers.common.Authorization = `${this.token.token_type} ${this.token.access_token}`
+      }
+    },
     async login(token: Token) {
       this.token = token
-      this.api.defaults.headers.common.Authorization = `${token.token_type} ${token.access_token}`
+      this.authsync()
       await this.api.get('/users/me').then((response) => {
         this.me = response.data as User
       })
-      await this.online()
     },
     async logout() {
-      await this.offline()
       this.token = null
+      this.authsync()
       this.me = null
-      this.api.defaults.headers.common.Authorization = null
-    },
-    async online(online: boolean = true) {
-      if (this.me === null) return
-      await this.api.get(`/users/me/edit?online=${online}`).then((response) => {
-        this.me = response.data as User
-      })
-    },
-    async offline(offline: boolean = true) {
-      await this.online(!offline)
     }
   },
   persist: true

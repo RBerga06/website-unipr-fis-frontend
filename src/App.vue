@@ -9,11 +9,12 @@ import {
   mdiLogin,
   mdiLogout
 } from '@mdi/js'
-import { ref, computed, onMounted, onUnmounted, onActivated, onDeactivated } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useTheme } from 'vuetify'
 import { useBackendStore } from '@/stores/backend'
 import AccountAvatar from './components/AccountAvatar.vue'
+import AccountListItem from './components/AccountListItem.vue'
 
 /* --- VUE ROUTER --- */
 const router = useRouter()
@@ -33,23 +34,12 @@ function onResize() {
   screenDimensions.value.width = window.innerWidth
   screenDimensions.value.height = window.innerHeight
 }
-onMounted(() => {
+onMounted(async () => {
+  backend.authsync()
   window.addEventListener('resize', onResize)
 })
-onUnmounted(() => {
+onUnmounted(async () => {
   window.removeEventListener('resize', onResize)
-})
-onActivated(() => {
-  // called on initial mount
-  // and every time it is re-inserted from the cache
-  console.log('activated!')
-  backend.online()
-})
-onDeactivated(() => {
-  // called when removed from the DOM into the cache
-  // and also when unmounted
-  backend.offline()
-  console.log('deactivated!')
 })
 
 /* --- DRAWER --- */
@@ -101,18 +91,17 @@ themeSystemApply() // Make sure we match the system theme
 </script>
 
 <template>
-  <v-app>
+  <v-app @click="backend.interact">
     <v-app-bar color="primary">
       <v-app-bar-nav-icon @click.stop="drawerExpanded = !drawerExpanded"></v-app-bar-nav-icon>
       <v-app-bar-title>The Quantum Portal</v-app-bar-title>
       <v-btn :icon="themeIcon" @click="themeToggle"></v-btn>
       <v-menu>
         <template v-slot:activator="{ props }">
-          <v-btn icon v-bind="props"><AccountAvatar :user="backend.me"></AccountAvatar></v-btn>
+          <v-btn icon v-bind="props"><AccountAvatar me watch></AccountAvatar></v-btn>
         </template>
         <v-list>
-          <v-list-item v-if="backend.me === null" title="Anonymous"></v-list-item>
-          <v-list-item v-else :title="backend.me.username"></v-list-item>
+          <AccountListItem me></AccountListItem>
         </v-list>
       </v-menu>
     </v-app-bar>
