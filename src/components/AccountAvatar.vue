@@ -9,9 +9,13 @@ import {
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { type User, isonline } from '@/stores/backend'
 
-const props = defineProps<{
-  user: User | null
-}>()
+const props = withDefaults(
+  defineProps<{
+    user: User | null
+    size: string | number | undefined
+  }>(),
+  { size: undefined }
+)
 
 const online = ref(false)
 const refreshId = ref<number | null>(null)
@@ -38,11 +42,11 @@ const icon = computed(() => {
 })
 </script>
 <template>
-  <v-avatar variant="text">
+  <v-avatar variant="text" :size="size">
     <v-badge v-if="online" dot bordered color="success" location="bottom end">
-      <v-icon :icon="icon"></v-icon>
+      <v-icon :icon="icon" :size="size"></v-icon>
     </v-badge>
-    <v-icon v-else :icon="icon"></v-icon>
+    <v-icon v-else :icon="icon" :size="size"></v-icon>
   </v-avatar>
 </template>
 <style scoped></style>

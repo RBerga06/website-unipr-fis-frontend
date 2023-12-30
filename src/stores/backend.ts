@@ -40,7 +40,7 @@ export const useBackendStore = defineStore('backend', {
       await this.api.get('/users/').then((response) => {
         this.users = response.data as { [id: string]: User }
         if (this.me !== null) {
-          this.me = this.users[this.me.username]
+          this.me = this.token === null ? null : this.users[this.me.username]
         }
       })
     },

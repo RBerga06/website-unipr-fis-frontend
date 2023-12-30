@@ -4,6 +4,7 @@ import AccountListItem from '@/components/AccountListItem.vue'
 import { mdiAccountCancel, mdiAccountQuestion } from '@mdi/js'
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
+import AccountSummary from '@/components/AccountSummary.vue'
 
 const props = withDefaults(defineProps<{ username: string | null }>(), { username: null })
 const backend = useBackendStore()
@@ -13,7 +14,10 @@ const users = computed(() => {
     .map((x) => x[1])
     .filter((user) => user !== null)
 })
-const username_ = computed(() => (props.username === null ? backend.me?.username : props.username))
+const username_ = computed(() =>
+  props.username === null ? (backend.me === null ? null : backend.me.username) : props.username
+)
+const user = computed(() => (username_.value === null ? null : allUsers.value[username_.value]))
 
 function notMe(u: User) {
   return backend.me === null || u.username != backend.me.username
@@ -86,6 +90,10 @@ function notMe(u: User) {
       </template>
     </v-list>
   </v-navigation-drawer>
+
+  <v-col v-if="username !== null">
+    <AccountSummary :user="user"></AccountSummary>
+  </v-col>
 </template>
 
 <style scoped></style>
