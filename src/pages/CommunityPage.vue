@@ -3,11 +3,13 @@ import { useBackendStore, type User } from '@/stores/backend'
 import AccountListItem from '@/components/AccountListItem.vue'
 import { mdiAccountCancel, mdiAccountQuestion } from '@mdi/js'
 import { computed } from 'vue'
+import { useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import AccountSummary from '@/components/AccountSummary.vue'
 
 const props = withDefaults(defineProps<{ username: string | null }>(), { username: null })
 const backend = useBackendStore()
+const router = useRouter()
 const { users: allUsers } = storeToRefs(backend)
 const users = computed(() => {
   return Object.entries(allUsers.value)
@@ -21,6 +23,13 @@ const user = computed(() => (username_.value === null ? null : allUsers.value[us
 
 function notMe(u: User) {
   return backend.me === null || u.username != backend.me.username
+}
+
+if (backend.me === null) {
+  console.log('/users: me is null - everything ok')
+} else {
+  console.log('/users: me is not null - redirecting to my user page')
+  router.replace(`/users/${backend.me.username}`)
 }
 </script>
 

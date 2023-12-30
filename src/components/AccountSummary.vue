@@ -36,11 +36,13 @@ async function setBanned(banned: boolean) {
     <template #prepend>
       <AccountAvatar :user="user" size="x-large"></AccountAvatar>
     </template>
-    <v-card-actions v-if="meAdmin">
-      <v-btn v-if="!user?.verified" color="success" @click.stop="setVerified(true)"
+    <v-card-actions
+      v-if="user !== null && meAdmin && (me === null || user.username !== me.username)"
+    >
+      <v-btn v-if="!user.verified" color="success" @click.stop="setVerified(true)"
         >Verify <v-icon end :icon="mdiCheck"></v-icon
       ></v-btn>
-      <v-btn v-if="!user?.banned" color="error" @click.stop="setBanned(true)"
+      <v-btn v-if="!user.banned" color="error" @click.stop="setBanned(true)"
         >Block<v-icon end :icon="mdiCancel"></v-icon
       ></v-btn>
       <v-btn v-else color="error" @click.stop="setBanned(false)"
