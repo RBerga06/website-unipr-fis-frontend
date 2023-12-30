@@ -19,7 +19,7 @@ export function isonline(user: User | null) {
   return (
     user !== null &&
     user.last_seen !== null &&
-    (Date.now() - new Date(user.last_seen).getDate()) / 1000 <= 120
+    (Date.now() - Date.parse(user.last_seen)) / 1000 <= 120
   )
 }
 
@@ -56,7 +56,7 @@ export const useBackendStore = defineStore('backend', {
     async interact() {
       /// Essentially, me.last_seen = now()
       if (this.me === null) return
-      await this.api.get(`users/me/edit?last_seen=${Date.now()}`).then((response) => {
+      await this.api.get(`users/me/edit?last_seen=${new Date().toISOString()}`).then((response) => {
         this.me = response.data as User
       })
     },
@@ -80,6 +80,12 @@ export const useBackendStore = defineStore('backend', {
       this.token = null
       this.authsync()
       this.me = null
+    },
+
+    /* Restore - to be called once, in App::onMount */
+    restore() {
+      this._refreshId = null
+      this.authsync()
     }
   },
   persist: true

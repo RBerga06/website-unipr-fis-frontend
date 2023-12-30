@@ -6,11 +6,10 @@ import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 
 const props = withDefaults(defineProps<{ username: string | null }>(), { username: null })
-// const users = ref<Array<User>>([])
 const backend = useBackendStore()
 const { users: allUsers } = storeToRefs(backend)
 const users = computed(() => {
-  return Object.entries(allUsers)
+  return Object.entries(allUsers.value)
     .map((x) => x[1])
     .filter((user) => user !== null)
 })
@@ -19,25 +18,6 @@ const username_ = computed(() => (props.username === null ? backend.me?.username
 function notMe(u: User) {
   return backend.me === null || u.username != backend.me.username
 }
-
-// const refresh = ref<number | null>(null)
-// onMounted(() => {
-//   refresh.value = setInterval(() => {
-//     backend.api
-//       .get('/users/all')
-//       .catch((_) => {
-//         users.value = []
-//       })
-//       .then((response) => {
-//         if (response) {
-//           users.value = response.data as User[]
-//         }
-//       })
-//   }, 1000) // Update every second
-// })
-// onUnmounted(() => {
-//   if (refresh.value !== null) clearInterval(refresh.value)
-// })
 </script>
 
 <template>

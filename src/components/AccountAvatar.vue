@@ -7,7 +7,7 @@ import {
   mdiIncognito
 } from '@mdi/js'
 import { ref, computed, onMounted, onUnmounted } from 'vue'
-import { type User, isonline, useBackendStore } from '@/stores/backend'
+import { type User, isonline } from '@/stores/backend'
 
 const props = defineProps<{
   user: User | null

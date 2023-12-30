@@ -37,8 +37,8 @@ function onResize() {
   screenDimensions.value.height = window.innerHeight
 }
 onMounted(async () => {
-  backend.authsync()
   window.addEventListener('resize', onResize)
+  backend.restore()
   backend.start()
 })
 onUnmounted(async () => {
