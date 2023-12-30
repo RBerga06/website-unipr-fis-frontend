@@ -43,7 +43,7 @@ async function setBanned(banned: boolean) {
       <v-btn v-if="!user?.banned" color="error" @click.stop="setBanned(true)"
         >Block<v-icon end :icon="mdiCancel"></v-icon
       ></v-btn>
-      <v-btn v-else color="success" @click.stop="setBanned(false)"
+      <v-btn v-else color="error" @click.stop="setBanned(false)"
         >Unblock<v-icon end :icon="mdiCancel"></v-icon
       ></v-btn>
     </v-card-actions>
