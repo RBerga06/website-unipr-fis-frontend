@@ -19,7 +19,16 @@ const users = computed(() => {
 const username_ = computed(() =>
   props.username === null ? (backend.me === null ? null : backend.me.username) : props.username
 )
-const user = computed(() => (username_.value === null ? null : allUsers.value[username_.value]))
+const user = computed(() => {
+  if (props.username !== null && props.username in allUsers.value) {
+    return allUsers.value[props.username]
+  } else if (backend.me !== null) {
+    router.replace(`/users/${backend.me.username}`)
+    return backend.me
+  } else {
+    return null
+  }
+})
 
 function notMe(u: User) {
   return backend.me === null || u.username != backend.me.username
