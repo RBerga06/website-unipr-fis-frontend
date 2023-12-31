@@ -37,7 +37,9 @@ async function setBanned(banned: boolean) {
       <AccountAvatar :user="user" size="x-large"></AccountAvatar>
     </template>
     <v-card-actions
-      v-if="user !== null && meAdmin && (me === null || user.username !== me.username)"
+      v-if="
+        me !== null && user !== null && me.admin && !user.admin && user.username !== me.username
+      "
     >
       <v-btn v-if="!user.verified" color="success" @click.stop="setVerified(true)"
         >Verify <v-icon end :icon="mdiCheck"></v-icon
