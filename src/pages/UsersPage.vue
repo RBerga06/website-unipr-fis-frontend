@@ -72,7 +72,7 @@ if (backend.me === null) {
       </template>
       <v-list-item
         v-if="backend.me !== null && backend.me.admin"
-        title="New user"
+        title="New account"
         :prepend-icon="mdiPlus"
       ></v-list-item>
       <template v-if="backend.me !== null">
