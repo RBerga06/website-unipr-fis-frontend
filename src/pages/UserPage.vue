@@ -20,9 +20,7 @@ const user = computed(() => {
 </script>
 
 <template>
-  <v-col v-if="username !== null">
-    <AccountSummary :user="user"></AccountSummary>
-  </v-col>
+  <AccountSummary :user="user"></AccountSummary>
 </template>
 
 <style scoped></style>
