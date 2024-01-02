@@ -10,7 +10,7 @@ const props = defineProps<{
 const router = useRouter()
 
 function clicked() {
-  if (props.user !== null) router.push(`/users/${props.user.username}`)
+  if (props.user !== null) router.push(`/users/@${props.user.username}`)
 }
 </script>
 

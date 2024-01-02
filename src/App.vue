@@ -136,7 +136,7 @@ themeSystemApply() // Make sure we match the system theme
           link
           :prepend-icon="mdiAccountMultiple"
           :active="router.currentRoute.value.path.startsWith('/users/')"
-          @click="router.push(`/users/${backend.me === null ? '' : backend.me.username}`)"
+          @click="router.push('/users/')"
           >Community</v-list-item
         >
         <v-divider></v-divider>

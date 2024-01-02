@@ -5,9 +5,7 @@ import { mdiPlus, mdiAccountCancel, mdiAccountQuestion } from '@mdi/js'
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
-import AccountSummary from '@/components/AccountSummary.vue'
 
-const props = withDefaults(defineProps<{ username: string | null }>(), { username: null })
 const backend = useBackendStore()
 const router = useRouter()
 const { users: allUsers } = storeToRefs(backend)
@@ -16,29 +14,12 @@ const users = computed(() => {
     .map((x) => x[1])
     .filter((user) => user !== null)
 })
-const username_ = computed(() =>
-  props.username === null ? (backend.me === null ? null : backend.me.username) : props.username
-)
-const user = computed(() => {
-  if (props.username !== null && props.username in allUsers.value) {
-    return allUsers.value[props.username]
-  } else if (backend.me !== null) {
-    router.replace(`/users/${backend.me.username}`)
-    return backend.me
-  } else {
-    return null
-  }
-})
+function isAt(username: string) {
+  return router.currentRoute.value.path === `/users/@${username}`
+}
 
 function notMe(u: User) {
   return backend.me === null || u.username != backend.me.username
-}
-
-if (backend.me === null) {
-  console.log('/users: me is null - everything ok')
-} else {
-  console.log('/users: me is not null - redirecting to my user page')
-  router.replace(`/users/${backend.me.username}`)
 }
 </script>
 
@@ -47,10 +28,7 @@ if (backend.me === null) {
     <v-list nav density="compact">
       <template v-if="backend.me !== null">
         <v-list-subheader stiky>Me</v-list-subheader>
-        <AccountListItem
-          :user="backend.me"
-          :active="backend.me.username == username_"
-        ></AccountListItem>
+        <AccountListItem :user="backend.me" :active="isAt(backend.me.username)"></AccountListItem>
         <v-divider></v-divider>
       </template>
       <v-list-subheader stiky>Admins</v-list-subheader>
@@ -58,7 +36,7 @@ if (backend.me === null) {
         <AccountListItem
           v-if="notMe(user) && user.verified && !user.banned && user.admin"
           :user="user"
-          :active="user.username == username_"
+          :active="isAt(user.username)"
         ></AccountListItem>
       </template>
       <v-divider></v-divider>
@@ -67,13 +45,15 @@ if (backend.me === null) {
         <AccountListItem
           v-if="notMe(user) && user.verified && !user.banned && !user.admin"
           :user="user"
-          :active="user.username == username_"
+          :active="isAt(user.username)"
         ></AccountListItem>
       </template>
       <v-list-item
         v-if="backend.me !== null && backend.me.admin"
         title="New account"
         :prepend-icon="mdiPlus"
+        :active="router.currentRoute.value.path === '/users/new'"
+        @click="router.push('/users/new')"
       ></v-list-item>
       <template v-if="backend.me !== null">
         <v-divider></v-divider>
@@ -90,7 +70,7 @@ if (backend.me === null) {
             <AccountListItem
               v-if="notMe(user) && !user.verified && !user.banned"
               :user="user"
-              :active="user.username == username_"
+              :active="isAt(user.username)"
             ></AccountListItem>
           </template>
         </v-list-group>
@@ -106,7 +86,7 @@ if (backend.me === null) {
             <AccountListItem
               v-if="notMe(user) && user.banned"
               :user="user"
-              :active="user.username == username_"
+              :active="isAt(user.username)"
             ></AccountListItem>
           </template>
         </v-list-group>
@@ -114,9 +94,7 @@ if (backend.me === null) {
     </v-list>
   </v-navigation-drawer>
 
-  <v-col v-if="username !== null">
-    <AccountSummary :user="user"></AccountSummary>
-  </v-col>
+  <router-view></router-view>
 </template>
 
 <style scoped></style>
