@@ -20,7 +20,9 @@ const user = computed(() => {
 </script>
 
 <template>
-  <AccountSummary :user="user"></AccountSummary>
+  <v-col>
+    <AccountSummary :user="user"></AccountSummary>
+  </v-col>
 </template>
 
 <style scoped></style>
