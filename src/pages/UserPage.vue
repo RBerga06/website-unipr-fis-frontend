@@ -5,7 +5,7 @@ import { useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import AccountSummary from '@/components/AccountSummary.vue'
 
-const props = withDefaults(defineProps<{ username: string | null }>(), { username: null })
+const props = defineProps<{ username: string | null }>()
 const backend = useBackendStore()
 const { users: allUsers } = storeToRefs(backend)
 const router = useRouter()
