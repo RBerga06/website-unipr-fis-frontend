@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useBackendStore, type User } from '@/stores/backend'
 import AccountListItem from '@/components/AccountListItem.vue'
-import { mdiAccountCancel, mdiAccountQuestion } from '@mdi/js'
+import { mdiPlus, mdiAccountCancel, mdiAccountQuestion } from '@mdi/js'
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
@@ -46,14 +46,14 @@ if (backend.me === null) {
   <v-navigation-drawer permanent>
     <v-list nav density="compact">
       <template v-if="backend.me !== null">
-        <v-list-subheader>Me</v-list-subheader>
+        <v-list-subheader stiky>Me</v-list-subheader>
         <AccountListItem
           :user="backend.me"
           :active="backend.me.username == username_"
         ></AccountListItem>
         <v-divider></v-divider>
       </template>
-      <v-list-subheader>Admins</v-list-subheader>
+      <v-list-subheader stiky>Admins</v-list-subheader>
       <template v-for="user in users" :key="user.username">
         <AccountListItem
           v-if="notMe(user) && user.verified && !user.banned && user.admin"
@@ -62,7 +62,7 @@ if (backend.me === null) {
         ></AccountListItem>
       </template>
       <v-divider></v-divider>
-      <v-list-subheader>Users</v-list-subheader>
+      <v-list-subheader stiky>Users</v-list-subheader>
       <template v-for="user in users" :key="user.username">
         <AccountListItem
           v-if="notMe(user) && user.verified && !user.banned && !user.admin"
@@ -70,9 +70,14 @@ if (backend.me === null) {
           :active="user.username == username_"
         ></AccountListItem>
       </template>
+      <v-list-item
+        v-if="backend.me !== null && backend.me.admin"
+        title="New user"
+        :prepend-icon="mdiPlus"
+      ></v-list-item>
       <template v-if="backend.me !== null">
         <v-divider></v-divider>
-        <v-list-subheader>Non-members</v-list-subheader>
+        <v-list-subheader stiky>Non-members</v-list-subheader>
         <v-list-group>
           <template v-slot:activator="{ props }">
             <v-list-item
