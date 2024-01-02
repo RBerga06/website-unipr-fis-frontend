@@ -15,7 +15,7 @@ function clicked() {
 </script>
 
 <template>
-  <v-list-item :link="user !== null" @click.stop="clicked">
+  <v-list-item :link="user !== null" @click="clicked">
     <template #prepend><AccountAvatar :user="user" density="compact"></AccountAvatar></template>
     {{ user === null ? 'Anonymous' : user.username }}
   </v-list-item>
