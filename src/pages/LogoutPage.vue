@@ -20,7 +20,7 @@ async function logout() {
     <v-col>
       <v-form @submit.prevent="logout">
         <v-btn block variant="elevated" type="submit" color="primary" :loading="loading"
-          >Log Out</v-btn
+          >Logout</v-btn
         >
       </v-form>
     </v-col>
