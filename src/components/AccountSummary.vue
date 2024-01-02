@@ -22,17 +22,17 @@ const status = computed(() =>
 
 async function setVerified(verified: boolean) {
   if (props.user === null) return
-  backend.api.get(`/users/@${props.user.username}/edit?verified=${verified}`)
+  await backend.api.get(`/users/@${props.user.username}/edit?verified=${verified}`)
 }
 async function setBanned(banned: boolean) {
   if (props.user === null) return
-  backend.api.get(`/users/@${props.user.username}/edit?banned=${banned}`)
+  await backend.api.get(`/users/@${props.user.username}/edit?banned=${banned}`)
 }
 async function delUser() {
   if (props.user === null) return
   console.log('del', props.user.username)
   const _username = props.user.username
-  backend.api.post(`/users/@${_username}/del`)
+  await backend.api.post(`/users/@${_username}/del`)
 }
 </script>
 
