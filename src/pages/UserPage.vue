@@ -12,11 +12,9 @@ const router = useRouter()
 const user = computed(() => {
   if (props.username !== null && props.username in allUsers.value) {
     return allUsers.value[props.username]
-  } else if (backend.me !== null) {
-    router.replace(`/users/${backend.me.username}`)
-    return backend.me
   } else {
-    return null
+    router.replace('/users/me')
+    return backend.me
   }
 })
 </script>
