@@ -23,6 +23,7 @@ import UserPage from './pages/UserPage.vue'
 import MyUserPage from './pages/MyUserPage.vue'
 import NewUserPage from './pages/NewUserPage.vue'
 import DefaultUserPage from './pages/DefaultUserPage.vue'
+import CalculatorPage from './pages/CalculatorPage.vue'
 
 // Pinia
 const pinia = createPinia().use(piniaPluginPersistedState)
@@ -44,6 +45,7 @@ const routes = [
   { path: '/login/', component: LoginPage },
   { path: '/logout/', component: LogoutPage },
   { path: '/verify/', component: AccountVerifyPage },
+  { path: '/calc/', component: CalculatorPage },
   { path: '/:pathMatch(.*)*', component: NotFoundPage }
 ]
 const router = createRouter({

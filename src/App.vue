@@ -7,7 +7,8 @@ import {
   mdiHome,
   mdiFileDocumentMultiple,
   mdiLogin,
-  mdiLogout
+  mdiLogout,
+  mdiCalculatorVariant
 } from '@mdi/js'
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
@@ -138,6 +139,14 @@ themeSystemApply() // Make sure we match the system theme
           :active="router.currentRoute.value.path.startsWith('/users/')"
           @click="router.push('/users/')"
           >Community</v-list-item
+        >
+        <v-divider></v-divider>
+        <v-list-item
+          link
+          :prepend-icon="mdiCalculatorVariant"
+          :active="router.currentRoute.value.path == '/calc/'"
+          @click="router.push('/calc/')"
+          >Uni&nbsp;Average&nbsp;Calculator</v-list-item
         >
         <v-divider></v-divider>
         <v-list-item
