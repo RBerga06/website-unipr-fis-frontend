@@ -146,7 +146,7 @@ themeSystemApply() // Make sure we match the system theme
           :prepend-icon="mdiCalculatorVariant"
           :active="router.currentRoute.value.path == '/calc/'"
           @click="router.push('/calc/')"
-          >Uni&nbsp;Average&nbsp;Calculator</v-list-item
+          >Uni&nbsp;Mean&nbsp;Calculator</v-list-item
         >
         <v-divider></v-divider>
         <v-list-item

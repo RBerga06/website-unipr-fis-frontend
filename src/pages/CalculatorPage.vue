@@ -46,7 +46,7 @@ onUnmounted(async () => {
 
 <template>
   <v-col flex class="pa-0">
-    <div class="text-h4 text-center pa-3">Weighted mean calculator</div>
+    <div class="text-h4 text-center pa-3">Weighted Mean Calculator</div>
     <v-divider></v-divider>
     <v-container fluid class="fill-height"><v-spacer></v-spacer></v-container>
     <v-list
