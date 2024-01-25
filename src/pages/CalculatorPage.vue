@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { mdiDelete, mdiPlus } from '@mdi/js'
+import { onUnmounted } from 'vue'
+import { onMounted } from 'vue'
 import { computed } from 'vue'
 import { ref } from 'vue'
 
@@ -28,14 +30,30 @@ function delItem(id: number) {
     data.value.splice(index, 1)
   }
 }
+
+const screenDimensions = ref({ width: window.innerWidth, height: window.innerHeight })
+function onResize() {
+  screenDimensions.value.width = window.innerWidth
+  screenDimensions.value.height = window.innerHeight
+}
+onMounted(async () => {
+  window.addEventListener('resize', onResize)
+})
+onUnmounted(async () => {
+  window.removeEventListener('resize', onResize)
+})
 </script>
 
 <template>
   <v-col flex class="pa-0">
-    <div class="text-h4 text-center pa-3">Weighted average calculator</div>
+    <div class="text-h4 text-center pa-3">Weighted mean calculator</div>
     <v-divider></v-divider>
     <v-container fluid class="fill-height"><v-spacer></v-spacer></v-container>
-    <v-list flex class="pa-2">
+    <v-list
+      flex
+      class="pa-2 bg-transparent overflow-y-auto"
+      :max-height="screenDimensions.height - 280"
+    >
       <template v-for="item in data" :key="item.id">
         <v-card elevation="3">
           <v-container fluid class="py-0">
