@@ -23,7 +23,7 @@
   "devDependencies": {
     "@mdi/font": "^7.3.67",
     "@mdi/js": "^7.3.67",
-    "@rushstack/eslint-patch": "^1.10.3",
+    "@rushstack/eslint-patch": "^1.10.4",
     "@tsconfig/node18": "^18.2.4",
     "@types/node": "^22.5.1",
     "@vitejs/plugin-vue": "^5.1.4",
